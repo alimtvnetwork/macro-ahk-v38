@@ -169,19 +169,21 @@ async function openProjectsView(context: BrowserContext, extensionId: string): P
     throw new Error('[e2e-02] Page-side onboarding re-seed did not commit.');
   }
 
-  // Stage 3: await interactivity. If we missed it (page already mounted before
-  // we attached, OR onboarding ran on first paint), reload to re-trigger.
-  // The interactive promise rejects on its own timeout; we swallow that so
-  // the body-text fallback can still race-win without dangling rejection.
+  // Stage 3: await interactivity. The Options page exposes a deterministic
+  // DOM marker (`[data-testid="options-state-marker"][data-branch="ready"]`)
+  // that flips to `ready` only when every loading flag is false AND
+  // onboarding is complete. This is strictly more reliable than the
+  // INTERACTIVE console log (which can fire before our listener attaches)
+  // or a body-text probe (the word "Projects" appears in the sidebar even
+  // while loading). We race the marker against the console log so whichever
+  // signal arrives first wins.
   const interactiveSafe = interactive.catch(() => undefined);
   try {
     await Promise.race([
       interactiveSafe,
-      page.waitForFunction(
-        () => document.body && document.body.innerText.includes('Projects'),
-        null,
-        { timeout: INTERACTIVE_TIMEOUT_MS },
-      ).then(() => undefined),
+      page.locator('[data-testid="options-state-marker"][data-branch="ready"]')
+        .waitFor({ state: 'attached', timeout: INTERACTIVE_TIMEOUT_MS })
+        .then(() => undefined),
     ]);
   } catch (err) {
     await captureDiagnostic(page, 'interactive-stage-failed');
