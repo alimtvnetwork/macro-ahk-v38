@@ -691,18 +691,18 @@ function listProjects() {
 
 function printArtifactReport(label, result) {
     if (result.ok) {
-        console.log(`  ✅ ${label}: ${rel(result.path)} — schema OK`);
+        console.log(`  [OK] ${label}: ${rel(result.path)} - schema OK`);
         return;
     }
-    console.log(`  ❌ ${label}: ${rel(result.path)}`);
+    console.log(`  [FAIL] ${label}: ${rel(result.path)}`);
     if (result.parseError) {
-        console.log(`     • ${result.parseError}`);
+        console.log(`     - ${result.parseError}`);
         annotate(rel(result.path), result.parseError);
         return;
     }
     let printed = 0;
     for (const v of result.violations) {
-        console.log(`     • ${v.path}: ${v.message}`);
+        console.log(`     - ${v.path}: ${v.message}`);
         if (printed < MAX_ANNOTATIONS) {
             annotate(rel(result.path), `${v.path}: ${v.message}`);
             printed++;
@@ -710,7 +710,7 @@ function printArtifactReport(label, result) {
     }
     if (result.violations.length > MAX_ANNOTATIONS) {
         const more = result.violations.length - MAX_ANNOTATIONS;
-        console.log(`     • (+${more} more violations not annotated)`);
+        console.log(`     - (+${more} more violations not annotated)`);
     }
 }
 
@@ -721,7 +721,7 @@ function main() {
     if (folderArg) {
         const full = resolve(REPO_ROOT, folderArg);
         if (!existsSync(full)) {
-            console.error(`❌ Project folder not found: ${folderArg}`);
+            console.error(`[FAIL] Project folder not found: ${folderArg}`);
             process.exit(2);
         }
         // Per-project mode: the folder must be a real standalone project,
@@ -731,7 +731,7 @@ function main() {
         const instructionSource = join(full, "src", "instruction.ts");
         if (!existsSync(instructionSource)) {
             console.error(
-                `❌ Not a standalone project (missing ${rel(instructionSource)})`,
+                `[FAIL] Not a standalone project (missing ${rel(instructionSource)})`,
             );
             process.exit(2);
         }
@@ -739,7 +739,7 @@ function main() {
     } else {
         projects = listProjects();
         if (projects === null) {
-            console.error(`❌ Repo layout broken: ${rel(STANDALONE_DIR)} not found`);
+            console.error(`[FAIL] Repo layout broken: ${rel(STANDALONE_DIR)} not found`);
             process.exit(2);
         }
         // Repo-wide mode: an empty discovery is suspicious — treat as a
