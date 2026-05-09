@@ -93,7 +93,7 @@ function loadSchemaVersionContract() {
     if (!existsSync(SCHEMA_VERSION_CONTRACT_PATH)) {
         throw new Error(
             `SchemaVersion contract missing at ${rel(SCHEMA_VERSION_CONTRACT_PATH)} ` +
-            `— restore from schema-version.ts or git history`,
+            `- restore from schema-version.ts or git history`,
         );
     }
     const raw = JSON.parse(readFileSync(SCHEMA_VERSION_CONTRACT_PATH, "utf-8"));
@@ -103,7 +103,7 @@ function loadSchemaVersionContract() {
         || typeof raw.current !== "string") {
         throw new Error(
             `SchemaVersion contract malformed at ${rel(SCHEMA_VERSION_CONTRACT_PATH)} ` +
-            `— expected { pattern: string, supported: string[≥1], current: string }`,
+            `- expected { pattern: string, supported: string[>=1], current: string }`,
         );
     }
     let pattern;
