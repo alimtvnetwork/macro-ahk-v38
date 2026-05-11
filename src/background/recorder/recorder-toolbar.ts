@@ -303,3 +303,16 @@ function makeButton(action: "start" | "pause" | "stop", label: string): HTMLButt
     btn.textContent = label;
     return btn;
 }
+
+function formatRelative(thenIso: string, nowIso: string): string {
+    const then = Date.parse(thenIso);
+    const now = Date.parse(nowIso);
+    if (Number.isNaN(then) || Number.isNaN(now)) { return "just now"; }
+    const deltaSec = Math.max(0, Math.round((now - then) / 1000));
+    if (deltaSec < 5) { return "just now"; }
+    if (deltaSec < 60) { return `${deltaSec}s ago`; }
+    const min = Math.floor(deltaSec / 60);
+    if (min < 60) { return `${min}m ago`; }
+    const hr = Math.floor(min / 60);
+    return `${hr}h ago`;
+}
