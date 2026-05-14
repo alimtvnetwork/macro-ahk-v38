@@ -445,7 +445,7 @@ async function exportCsv(statusEl: HTMLElement): Promise<void> {
     state.exporting = true;
     setExportButtonDisabled(true);
     statusEl.style.color = '#94a3b8';
-    statusEl.textContent = 'Fetching git info: 0 / ' + tasks.length + '…';
+    statusEl.textContent = 'Fetching git + last communication: 0 / ' + tasks.length + '…';
 
     const exportedAt = new Date().toISOString();
     const rows: ExportRow[] = [];
@@ -466,12 +466,12 @@ async function exportCsv(statusEl: HTMLElement): Promise<void> {
             isOpenInChrome: tabIsOpen ? 'yes' : 'no',
             gitRepo: git.repo,
             gitBranch: git.branch,
-            lastCommunication: git.lastMessageAt,
+            lastCommunication: git.error ? '' : (git.lastMessageAt || '(no data returned by API)'),
             gitFetchError: git.error,
             extensionVersion: VERSION,
             exportedAt,
         });
-        statusEl.textContent = 'Fetching git info: ' + i + ' / ' + tasks.length
+        statusEl.textContent = 'Fetching git + last communication: ' + i + ' / ' + tasks.length
             + ' (' + Math.round((i / tasks.length) * 100) + '%)';
     }
 
