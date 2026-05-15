@@ -205,9 +205,9 @@ const _activePolls = new Set<ActivePollEntry>();
 export function _diagActivePolls(): Array<{ label: string; ageMs: number }> {
     const now = Date.now();
     const out: Array<{ label: string; ageMs: number }> = [];
-    for (const entry of _activePolls) {
+    _activePolls.forEach(function (entry) {
         out.push({ label: entry.label, ageMs: now - entry.startedAt });
-    }
+    });
     return out;
 }
 
