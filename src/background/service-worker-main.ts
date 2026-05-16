@@ -25,6 +25,7 @@ import { registerCookieWatcher } from "./cookie-watcher";
 import { registerContextMenu } from "./context-menu-handler";
 import { registerShortcutCommands } from "./shortcut-command-handler";
 import { registerSpaReinject } from "./spa-reinject";
+import { registerUrlTriggers } from "./url-trigger";
 import { startHotReload } from "./hot-reload";
 import { MessageType } from "../shared/messages";
 import { logCaughtError, BgLogTag} from "./bg-logger";
@@ -137,6 +138,7 @@ const registrations: Array<[string, () => void]> = [
     ["context-menu", registerContextMenu],
     ["shortcut-commands", registerShortcutCommands],
     ["spa-reinject", registerSpaReinject],
+    ["url-trigger", registerUrlTriggers],
     ["keepalive", registerKeepalive],
     ["hot-reload", startHotReload],
 ];
