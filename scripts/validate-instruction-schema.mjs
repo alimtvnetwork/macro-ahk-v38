@@ -784,13 +784,19 @@ function main() {
         }
 
         const canonical = validateArtifact(canonicalPath, ProjectInstructionSchema, true);
-        const compat = validateArtifact(compatPath, ProjectInstructionSchemaCamel, false);
-        totalArtifacts += 2;
+        totalArtifacts += 1;
         if (!canonical.ok) totalFailures++;
-        if (!compat.ok) totalFailures++;
-
         printArtifactReport("canonical", canonical);
-        printArtifactReport("compat   ", compat);
+
+        // Phase 2c: compat snapshot retired. Only validate it when
+        // present (e.g. legacy dist directory left over from before the
+        // migration, or a fixture explicitly emitting both shapes).
+        if (existsSync(compatPath)) {
+            const compat = validateArtifact(compatPath, ProjectInstructionSchemaCamel, false);
+            totalArtifacts += 1;
+            if (!compat.ok) totalFailures++;
+            printArtifactReport("compat   ", compat);
+        }
     }
 
     console.log("\n----------------------------");
