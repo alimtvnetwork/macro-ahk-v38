@@ -173,3 +173,6 @@ Implementation is gated on the user's "next" — at that point we tackle U-1, U-
 
 ### Update v2.245.0 — U-5 resolved
 `standalone-scripts/macro-controller/src/spa-route-guard.ts` installs a single popstate listener + pushState/replaceState monkey-patch. On project id change (or leaving `/projects/{id}` entirely) it calls `stopLoop()` and surfaces one toast. `pagehide` stops the loop to avoid BFCache zombies. Teardown restores originals and removes listeners. No interval, no retry, idempotent.
+
+### Update v2.246.0 — U-4 resolved
+`extractProjectIdFromUrl()` now memoizes by `window.location.href`. Cache invalidates implicitly when href changes (full reload, tab switch into different URL) and explicitly via `invalidateProjectIdCache()` called from `spa-route-guard.evaluateRouteChange()` before each post-navigation read. All ~10 callers benefit transparently — no call-site changes required.
