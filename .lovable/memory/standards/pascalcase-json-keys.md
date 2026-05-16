@@ -6,7 +6,7 @@ type: preference
 
 # PascalCase JSON keys everywhere
 
-**Status**: Enforced end-to-end (Phase 1 + Phase 2 complete; Phase 2c — drop the compat snapshot — is the remaining clean-up).
+**Status**: Enforced end-to-end (Phase 1 + 2a + 2b + 2c all complete; 2c-storage scaffolding landed, payload-rewrite v2 deferred).
 **Decision date**: 2026-04-25 (user direction during the `ProjectInstruction` migration session).
 **CI guard**: `scripts/check-pascalcase-instruction-migration.mjs` blocks any regression at PR time. See `mem://architecture/instruction-dual-emit-phase-2b`.
 
@@ -21,7 +21,9 @@ Every key in every standalone-script `instruction.ts`, every emitted `dist/instr
 | **Phase 1** | Rename every key inside `standalone-scripts/*/src/instruction.ts` and the shared `ProjectInstruction<T>` type tree under `standalone-scripts/types/instruction/` to PascalCase. Withdraw the Q4 long-name draft (`injectionWorld`, `injectionRunAt`, `isImmediatelyInvokedFunction`, `injectInto`). | ✅ Complete |
 | **Phase 2a** | Migrate every background-runtime consumer (`manifest-seeder`, `script-info-handler`, `injection-handler`, `default-project-seeder`, `builtin-script-guard`, `generate-seed-manifest.mjs`, `seed-manifest-types`) to read PascalCase keys. | ✅ Complete |
 | **Phase 2b** | Split `compile-instruction.mjs` emit: `dist/instruction.json` (pure PascalCase, canonical) + `dist/instruction.compat.json` (pure camelCase, transitional snapshot for the lone unmigrated reader, the vite `copyProjectScripts` plugin). Bump `SeedManifest.SchemaVersion` to `2`; v1 (camelCase) refused at load. | ✅ Complete |
-| **Phase 2c** | Migrate `vite.config.extension.ts`'s `copyProjectScripts` plugin to read PascalCase. Empty `COMPAT_READER_ALLOWLIST` in the CI guard. Stop emitting `instruction.compat.json` from `compile-instruction.mjs`. Remove `instruction.compat.json` from `check-standalone-dist.mjs` required-files lists. | ⏳ Pending |
+| **Phase 2c** | Migrate `vite.config.extension.ts`'s `copyProjectScripts` plugin to read PascalCase. Drop `vite.config.extension.ts` from `COMPAT_READER_ALLOWLIST`. Stop emitting `instruction.compat.json` from `compile-instruction.mjs`. Remove from `check-standalone-dist.mjs` required-files lists. Make compat scanning optional (present-only) in `check-instruction-json-casing.mjs` + `validate-instruction-schema.mjs`. | ✅ Complete 2026-05-16 |
+| **Phase 2c-storage (scaffolding)** | Establish `chrome.storage.local` schema-version framework: new `src/background/storage-migration.ts` with `CURRENT_STORAGE_SCHEMA_VERSION=1` baseline identity migration, sequential `runStorageMigrations()` runner, persisted key `marco_storage_schema_version`, wired into `boot.ts` between `start-session` and `seed-scripts`. Fail-fast (no retry). Drops in as a hook for future v2 payload rewrites. | ✅ Complete 2026-05-16 |
+| **Phase 2c-storage (payload v2)** | Add v2 migration that rewrites every persisted `StoredProject` / `StoredScript` row from camelCase to PascalCase keys, and rename `src/shared/project-types.ts` + every consumer (UI, background handlers, popup, options) to match. Deferred until Phase 2b UI consumers adopt PascalCase to avoid wide blast radius. | ⏳ Deferred |
 
 ---
 
