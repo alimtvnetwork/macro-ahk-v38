@@ -273,6 +273,57 @@ export default function StepEditorDialog(props: StepEditorDialogProps): JSX.Elem
             });
             return;
         }
+        // UrlTabClick kind has its own structured form — validate the
+        // pattern (mirrors `validateUrlTabClickParams` in url-tab-click.ts)
+        // and serialise into PayloadJson.
+        if (kind === StepKindId.UrlTabClick) {
+            const u = urlTabClick;
+            if (u.UrlPattern.trim() === "") {
+                toast.error("URL pattern is required.");
+                return;
+            }
+            if (u.DirectOpen) {
+                if (u.Mode !== "OpenNew") {
+                    toast.error("DirectOpen requires Mode = 'OpenNew'.");
+                    return;
+                }
+                if (u.Url.trim() === "") {
+                    toast.error("DirectOpen requires a literal URL.");
+                    return;
+                }
+            }
+            const timeoutTrim = u.TimeoutMs.trim();
+            const timeoutMs = timeoutTrim === "" ? undefined : Number(timeoutTrim);
+            if (timeoutMs !== undefined && (!Number.isFinite(timeoutMs) || timeoutMs < 0)) {
+                toast.error("Timeout (ms) must be ≥ 0.");
+                return;
+            }
+            // Reject obviously broken regex patterns at save time.
+            if (u.UrlMatch === "Regex") {
+                try { new RegExp(u.UrlPattern); } catch (err) {
+                    const msg = err instanceof Error ? err.message : String(err);
+                    toast.error("Invalid regex pattern", { description: msg });
+                    return;
+                }
+            }
+            const payload: Record<string, unknown> = {
+                UrlPattern: u.UrlPattern.trim(),
+                UrlMatch:   u.UrlMatch,
+                Mode:       u.Mode,
+            };
+            if (u.Selector.trim() !== "") payload.Selector = u.Selector.trim();
+            if (u.SelectorKind !== "Auto") payload.SelectorKind = u.SelectorKind;
+            if (timeoutMs !== undefined)   payload.TimeoutMs = timeoutMs;
+            if (u.DirectOpen)              payload.DirectOpen = true;
+            if (u.Url.trim() !== "")       payload.Url = u.Url.trim();
+            onSubmit({
+                StepKindId: kind,
+                Label: label.trim() === "" ? null : label.trim(),
+                PayloadJson: JSON.stringify(payload),
+                TargetStepGroupId: null,
+            });
+            return;
+        }
         // Light JSON validation when a payload was provided. We allow
         // a blank payload (some kinds don't need one), but reject
         // obvious typos before they round-trip through the DB.
