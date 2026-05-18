@@ -31,15 +31,16 @@
 name: Release Build
 
 on:
+  create:
   push:
     branches:
       - "release/**"
     tags:
       - "v*"
-  # Manual replay path — used to recover a release whose original tag-push
+  # Manual replay path — used to recover a release whose original tag/create
   # event never reached Actions (e.g., tag created via the GitHub web UI's
-  # "Create release from tag" flow, or the Lovable release tooling which
-  # writes .gitmap/release/v*.json but does not always fire push:tags).
+  # "Create release from tag" flow, or release tooling which writes
+  # .gitmap/release/v*.json but does not always fire push:tags).
   # The release-watcher.yml workflow auto-invokes this dispatch when a
   # new .gitmap/release/v*.json lands on main.
   workflow_dispatch:
