@@ -546,10 +546,14 @@ export async function exportProjectsAsSqliteZip(
   db.run(CREATE_CONFIGS_TABLE);
   db.run(CREATE_PROMPTS_TABLE);
   db.run(CREATE_META_TABLE);
+  db.run(CREATE_DEPENDENCIES_TABLE);
+  db.run(CREATE_VARIABLES_TABLE);
 
   insertProjects(db, [...projects]);
   insertScripts(db, relatedScripts);
   insertConfigs(db, relatedConfigs);
+  insertDependencies(db, projects);
+  insertVariables(db, projects);
   insertMeta(db);
 
   const dbData = db.export();
