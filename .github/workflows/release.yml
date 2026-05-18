@@ -129,6 +129,7 @@ jobs:
           echo "Resolved version: ${VERSION} (ref=${REF})"
 
       - name: Enforce lowercase .md filenames
+        if: steps.version.outputs.skip != 'true'
         run: |
           VIOLATIONS=$(find . -name '*.md' \
             -not -path './node_modules/*' \
@@ -143,22 +144,27 @@ jobs:
           echo "✅ All .md filenames are lowercase"
 
       - name: Setup Node.js
+        if: steps.version.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Setup pnpm
+        if: steps.version.outputs.skip != 'true'
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
       - name: Install root dependencies
+        if: steps.version.outputs.skip != 'true'
         run: pnpm install --no-frozen-lockfile
 
       - name: Run root lint
+        if: steps.version.outputs.skip != 'true'
         run: pnpm run lint
 
       - name: Run tests
+        if: steps.version.outputs.skip != 'true'
         run: pnpm run test
 
   # ════════════════════════════════════════════════════════════
