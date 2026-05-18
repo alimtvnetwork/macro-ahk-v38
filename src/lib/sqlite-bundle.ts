@@ -301,9 +301,65 @@ function insertPrompts(db: Database, prompts: PromptEntry[]): void {
   stmt.free();
 }
 
-/** Fetches all data, builds a SQLite DB, zips it, and triggers download. */
-// eslint-disable-next-line max-lines-per-function
-export async function exportAllAsSqliteZip(): Promise<void> {
+/**
+ * v6: write each project's dependencies as its own row in the new
+ * Dependencies table. Projects.Dependencies JSON blob is ALSO still
+ * emitted by insertProjects() so v4/v5-only readers keep round-tripping.
+ */
+function insertDependencies(db: Database, projects: ReadonlyArray<StoredProject>): void {
+  const stmt = db.prepare(`
+    INSERT INTO Dependencies (Uid, ProjectUid, DependsOnProjectId, Version, CreatedAt, UpdatedAt)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+  const now = new Date().toISOString();
+  for (const p of projects) {
+    const deps = Array.isArray(p.dependencies) ? p.dependencies : [];
+    for (const dep of deps) {
+      const d = dep as unknown as Record<string, unknown>;
+      const dependsOn = typeof d.projectId === "string" ? d.projectId : "";
+      if (!dependsOn) continue;
+      stmt.run([
+        null,
+        p.id ?? "",
+        dependsOn,
+        typeof d.version === "string" ? d.version : null,
+        now,
+        now,
+      ]);
+    }
+  }
+  stmt.free();
+}
+
+/**
+ * v6: write each project's settings.variables entry as its own row.
+ * Value is JSON-stringified to preserve non-string types. Settings
+ * JSON blob is still emitted by insertProjects() for v4/v5 read-back.
+ */
+function insertVariables(db: Database, projects: ReadonlyArray<StoredProject>): void {
+  const stmt = db.prepare(`
+    INSERT INTO Variables (Uid, ProjectUid, Name, Value, CreatedAt, UpdatedAt)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+  const now = new Date().toISOString();
+  for (const p of projects) {
+    const settings = (p.settings ?? {}) as Record<string, unknown>;
+    const rawVars = settings.variables;
+    if (rawVars == null || typeof rawVars !== "object") continue;
+    const vars = rawVars as Record<string, unknown>;
+    for (const [name, value] of Object.entries(vars)) {
+      stmt.run([
+        null,
+        p.id ?? "",
+        name,
+        value == null ? null : JSON.stringify(value),
+        now,
+        now,
+      ]);
+    }
+  }
+  stmt.free();
+}
   const [projRes, scriptsRes, configsRes, promptsRes] = await Promise.all([
     sendMessage<{ projects: StoredProject[] }>({ type: "GET_ALL_PROJECTS" }),
     sendMessage<{ scripts: StoredScript[] }>({ type: "GET_ALL_SCRIPTS" }),
