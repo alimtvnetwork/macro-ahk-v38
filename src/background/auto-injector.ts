@@ -23,7 +23,12 @@ import { logCaughtError, logBgWarnError, BgLogTag } from "./bg-logger";
 import {
     setTabInjection,
     getActiveProjectId,
+    getTabDecision,
+    setTabDecision,
+    clearTabDecision,
+    isSameDecisionFingerprint,
 } from "./state-manager";
+import { urlFingerprint } from "./url-fingerprint";
 import { injectWithCspFallback } from "./csp-fallback";
 import { STORAGE_KEY_ALL_SCRIPTS } from "../shared/constants";
 import { ensureBuiltinScriptsExist } from "./builtin-script-guard";
@@ -31,6 +36,9 @@ import { persistInjectionError, persistInjectionWarn } from "./injection-diagnos
 import { readAllProjects } from "./handlers/project-helpers";
 import type { StoredScript } from "../shared/script-config-types";
 import type { MatchResult, ScriptBindingResolved } from "../shared/types";
+
+/** Dedup TTL — absorb burst/double-fires from listener overlap (audit U-1). */
+const DEDUP_TTL_MS = 5_000;
 
 /* ------------------------------------------------------------------ */
 /*  URL Guards                                                         */
