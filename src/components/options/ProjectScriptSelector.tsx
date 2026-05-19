@@ -75,12 +75,13 @@ interface ScriptEntryCardProps {
   onMoveUp: () => void;
   onMoveDown: () => void;
   linkMap?: LibraryLinkMap;
+  isUnbound?: boolean;
 }
 
 // eslint-disable-next-line max-lines-per-function
 function ScriptEntryCard({
   binding, index, totalCount, availableConfigs,
-  onUpdate, onRemove, onMoveUp, onMoveDown, linkMap,
+  onUpdate, onRemove, onMoveUp, onMoveDown, linkMap, isUnbound,
 }: ScriptEntryCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("js");
