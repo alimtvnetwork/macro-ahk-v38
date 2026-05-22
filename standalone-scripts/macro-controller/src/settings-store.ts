@@ -28,6 +28,8 @@ export interface SettingsOverrides {
   refillWarningThresholdDays?: number;
   /** pro_0 credit-balance IndexedDB cache TTL (minutes). Spec §9.1 / §11. */
   proZeroCreditBalanceCacheTtlMinutes?: number;
+  /** Master switch for the canceled/expired credit override. Default true. */
+  enableCanceledCreditOverride?: boolean;
 }
 
 type SettingsListener = (overrides: SettingsOverrides) => void;
