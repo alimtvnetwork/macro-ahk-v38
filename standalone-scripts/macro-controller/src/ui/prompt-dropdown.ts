@@ -58,25 +58,8 @@ function keepTaskNextSubInView(promptsDropdown: HTMLElement, taskNextSub: HTMLEl
   });
 }
 
-// CQ16: Extracted from renderPromptsDropdown closure
-function makeFilterChip(
-  label: string,
-  value: string,
-  ctx: PromptContext,
-  taskNextDeps: TaskNextDeps,
-): HTMLElement {
-  const chip = document.createElement('span');
-  chip.textContent = label;
-  const isActive = getPromptCategoryFilter() === value;
-  chip.style.cssText = 'padding:2px 8px;border-radius:10px;font-size:9px;cursor:pointer;transition:all .15s;' +
-    (isActive ? 'background:' + cPrimary + ';color:#fff;' : 'background:' + cPrimaryHL + ';color:' + cPrimaryLight + ';');
-  chip.onclick = function(e: Event) {
-    e.stopPropagation();
-    setPromptCategoryFilter(isActive ? null : value);
-    renderPromptsDropdown(ctx, taskNextDeps);
-  };
-  return chip;
-}
+// Legacy single-pick chip helper removed in favor of the new Filter menu.
+// (Multi-select state lives in prompt-loader.ts via getPromptCategoryFilterSet.)
 
 /**
  * Render the prompts dropdown with categories, Task Next submenu, and prompt items.
