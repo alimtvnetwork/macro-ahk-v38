@@ -80,6 +80,7 @@ export function showProjectsModal(): void {
     state.blocks = [];
     state.tabIndex = null;
     state.exporting = false;
+    state.searchQuery = '';
 
     const panel = createPanel();
     const titleBar = createTitleBar(panel);
@@ -88,6 +89,9 @@ export function showProjectsModal(): void {
     const body = document.createElement('div');
     body.style.cssText = 'padding:10px;max-height:60vh;overflow-y:auto;';
     body.innerHTML = renderEmpty('Loading workspaces…');
+
+    const search = createSearchBar(function () { renderBody(body); });
+    panel.appendChild(search);
     panel.appendChild(body);
 
     const footer = createFooter(
@@ -98,6 +102,13 @@ export function showProjectsModal(): void {
 
     document.body.appendChild(panel);
     void loadAndRender(body);
+}
+
+/** Render the current blocks + filter into the body element. */
+function renderBody(body: HTMLElement): void {
+    const tabIndex = state.tabIndex ?? { byProjectId: new Map(), byUrlProjectId: new Map() };
+    body.innerHTML = renderAll(state.blocks, tabIndex, null, state.searchQuery);
+    attachRowClicks(body);
 }
 
 export function removeProjectsModal(): void {
