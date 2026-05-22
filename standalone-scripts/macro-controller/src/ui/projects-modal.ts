@@ -152,6 +152,7 @@ export function removeProjectsModal(): void {
     existing.remove();
 }
 
+// eslint-disable-next-line max-lines-per-function
 async function loadAndRender(body: HTMLElement, opts?: { bypassCache?: boolean }): Promise<void> {
     body.innerHTML = renderEmpty('Loading workspaces…');
 
