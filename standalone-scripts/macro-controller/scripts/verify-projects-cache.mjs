@@ -36,6 +36,9 @@ const fakeKv = {
 };
 
 globalThis.window = { marco: { kv: fakeKv } };
+// Stub `document` so the shared `log()` (which fans out to the activity-log
+// DOM updater) is a no-op in this Node/Bun verification environment.
+globalThis.document = { getElementById: () => null, createElement: () => ({ style: {}, appendChild() {}, setAttribute() {} }) };
 
 // Stub settings-store to avoid the chrome.storage dependency chain.
 const SETTINGS_PATH = resolve(srcRoot, 'settings-store.ts');
