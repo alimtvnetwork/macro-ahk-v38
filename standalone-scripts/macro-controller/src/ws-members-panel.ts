@@ -22,6 +22,7 @@ import { logError } from './error-utils';
 import { formatDateDDMMMYY } from './workspace-status';
 import { inviteMember, removeMember, updateMemberRole } from './ws-members-mutations';
 import { showToast } from './toast';
+import { onCreditPollTick } from './credit-poll-events';
 
 const PANEL_ID = 'marco-ws-members-panel';
 const Z_INDEX = 100002;
