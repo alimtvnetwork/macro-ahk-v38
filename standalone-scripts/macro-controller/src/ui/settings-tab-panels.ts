@@ -60,6 +60,7 @@ export interface ConfigDbPanelResult {
 export interface GeneralPanelResult {
   panel: HTMLElement;
   inputs: Record<string, HTMLInputElement>;
+  toggles: Record<string, HTMLInputElement>;
 }
 
 // ── XPaths Panel ──
