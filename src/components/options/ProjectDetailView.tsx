@@ -63,6 +63,7 @@ import type { StoredProject, StoredScript, StoredConfig } from "@/hooks/use-proj
 import { DEFAULT_CHATBOX_XPATH } from "@/shared/defaults";
 import { ProjectScriptSelector, type ScriptBinding } from "./ProjectScriptSelector";
 import { DevGuideSection } from "./DevGuideSection";
+import { AutoAttachDiagnosticsPanel } from "./AutoAttachDiagnosticsPanel";
 import { slugify, toCodeName, toSdkNamespace } from "@/lib/slug-utils";
 import { generateLlmGuide } from "@/lib/generate-llm-guide";
 import { exportKnowledgeBase } from "@/lib/developer-guide-bundle";
