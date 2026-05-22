@@ -32,6 +32,9 @@ import { CREDIT_API_BASE } from './shared-state';
 
 interface ProjectEntry { id: string; name: string }
 
+/** Confirm before bulk-remixing this many or more workspaces. */
+const BULK_CONFIRM_THRESHOLD = 4;
+
 async function fetchProjects(wsId: string): Promise<ProjectEntry[]> {
   const sdk = window.marco;
   if (!sdk || !sdk.api || !sdk.api.projects || typeof sdk.api.projects.list !== 'function') {
