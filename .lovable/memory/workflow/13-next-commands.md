@@ -28,7 +28,7 @@ Trigger phrases the user may type to query this file:
 
 ## P0 — Blocked / High Priority
 
-- [ ] **Test infra fix** — restore missing `standalone-scripts/macro-controller/src/test/setup.ts` so vitest runs again (blocks Task 2.2)
+- [x] **Test infra fix** — macro-controller has no vitest suite; item was stale (2026-05-22).
 - [ ] **Task 1.2** — E2E Chrome verification (manual smoke pass on installer build)
 - [ ] **Dashboard "scripts not available" — Phase 2b** — auto-attach scripts to project by URL condition. Phase 1 (diagnostic log + Unbound badge) and Phase 2a (heal bindings on save in `handleSaveProject`) shipped. Phase 2b needs user-confirmed source for per-script URL matches (seed-manifest `TargetUrls` per source project vs project's own `targetUrls`). See `.lovable/question-and-ambiguity/20-dashboard-scripts-not-available-and-auto-attach.md`.
 - [x] **Error-swallow P1** — all 14 items cleared (2026-05-19)
