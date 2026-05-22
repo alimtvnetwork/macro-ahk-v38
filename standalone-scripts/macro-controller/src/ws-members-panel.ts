@@ -376,7 +376,8 @@ interface PanelHandlerStore {
   _marcoMembersOutsideClick?: (e: MouseEvent) => void;
   _marcoMembersKey?: (e: KeyboardEvent) => void;
   _marcoMembersSubmit?: (e: Event) => void;
-  _marcoMembersLatest?: { wsName: string; members: WorkspaceMember[]; total: number };
+  _marcoMembersLatest?: { wsName: string; members: WorkspaceMember[]; total: number; limit: number };
+  _marcoMembersLimit?: number;
 }
 
 function ensurePanelEl(): HTMLDivElement {
