@@ -91,6 +91,7 @@ Updated: just now
 - [No CI notifications](mem://constraints/no-ci-notifications) — Never send emails/notifications for CI build events
 - [Namespace database creation](mem://features/namespace-database-creation) — Dot-separated namespaces, max 25, System.* reserved
 - [Error logging via namespace logger](mem://standards/error-logging-via-namespace-logger.md) — Use Logger.error(), no swallowed errors
+- [No silent failures](mem://standards/no-silent-failures) — Log first, classify later; missing script when URL matches = ERROR (not warn)
 - [Pre-write standards check](mem://standards/pre-write-check) — Read standards + sibling file before writing any new code
 - [No CSS !important](mem://standards/no-css-important) — Forbidden in CSS, LESS, and CSS-in-string-literal
 - [No error swallowing](mem://standards/no-error-swallowing) — Catch must Logger.error() and rethrow / Result.err — never silent return
