@@ -30,7 +30,7 @@ const instruction: ProjectInstruction<MacroControllerSettings> = {
         Id: "default-macro-looping",
         SeedOnInstall: true,
         IsRemovable: false,
-        AutoInject: false,
+        AutoInject: true,
         RunAt: "document_idle",
         CookieBinding: "lovable-session-id.id",
         TargetUrls: [

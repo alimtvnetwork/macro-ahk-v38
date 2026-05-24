@@ -30,7 +30,7 @@ const instruction: ProjectInstruction<EmptySettings> = {
         Id: "default-lovable-user-add",
         SeedOnInstall: true,
         IsRemovable: false,
-        AutoInject: false,
+        AutoInject: true,
         RunAt: "document_idle",
         TargetUrls: [{ Pattern: "https://lovable.dev/*", MatchType: "glob" }],
         Cookies: [],
