@@ -12,6 +12,7 @@ import {
   DEFAULT_REFILL_WARNING_THRESHOLD_DAYS,
   DEFAULT_ENABLE_WORKSPACE_STATUS_LABELS,
   DEFAULT_ENABLE_WORKSPACE_HOVER_DETAILS,
+  DEFAULT_HOVERCARD_HIDE_GRACE_PERIOD_MS,
 } from './constants';
 import type { WorkspaceLifecycleConfigInput } from './types/config-types';
 import { getSettingsOverrides } from './settings-store';
@@ -22,6 +23,7 @@ export interface WorkspaceLifecycleConfig {
   refillWarningThresholdDays: number;
   enableWorkspaceStatusLabels: boolean;
   enableWorkspaceHoverDetails: boolean;
+  hoverCardHideGracePeriodMs: number;
 }
 
 function readRawLifecycleConfig(): Partial<WorkspaceLifecycleConfigInput> {
