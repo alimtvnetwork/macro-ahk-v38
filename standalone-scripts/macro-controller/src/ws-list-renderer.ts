@@ -430,7 +430,7 @@ function buildWsRowInnerHtml(
   const cfg = getWorkspaceLifecycleConfig();
   if (cfg.enableWorkspaceStatusLabels) {
     const status = getEffectiveStatus(ws, cfg);
-    tierBadge += buildStatusPillHtml(status);
+    tierBadge += buildStatusPillHtml(status, ws);
   } else if (wsTier === 'EXPIRED') {
     // Legacy fallback when pills disabled — preserve the old chip.
     const days = expiredDays(ws);
