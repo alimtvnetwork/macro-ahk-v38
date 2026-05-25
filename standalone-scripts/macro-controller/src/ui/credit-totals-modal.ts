@@ -39,25 +39,42 @@ export function formatMytReset(iso: string): string {
   return weekday + ' ' + hh + ':' + mm + ' MYT';
 }
 
+/** Tone palette for credit numbers — colourful, dark-theme safe (Step 7). */
+export type CreditTone = 'ok' | 'warn' | 'used' | 'total' | 'muted' | 'accent';
+const TONE_COLOR: Record<CreditTone, string> = {
+  ok: '#86efac',      // green — remaining / healthy
+  warn: '#fbbf24',    // amber — alerts
+  used: '#fb923c',    // orange — consumption
+  total: '#a78bfa',   // purple — totals / grants
+  accent: '#67e8f9',  // cyan — plan / meta
+  muted: cPanelFgDim,
+};
+function toneColor(tone: CreditTone | undefined): string {
+  if (tone && TONE_COLOR[tone]) return TONE_COLOR[tone];
+  return '#e0e0e0';
+}
+
 /** Build a single summary card (heading + 3 stat rows). */
-export function buildCard(heading: string, rows: ReadonlyArray<{ label: string; value: string; tone?: 'ok' | 'warn' | 'muted' }>): HTMLElement {
+export function buildCard(heading: string, rows: ReadonlyArray<{ label: string; value: string; tone?: CreditTone }>): HTMLElement {
   const card = document.createElement('div');
-  card.style.cssText = 'background:rgba(0,0,0,0.30);border:1px solid rgba(124,58,237,0.30);border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;min-width:160px;flex:1;';
+  card.style.cssText = 'background:rgba(0,0,0,0.30);border:1px solid rgba(124,58,237,0.30);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:170px;flex:1;';
 
   const h = document.createElement('div');
-  h.style.cssText = 'font-size:9px;color:' + cPrimaryLighter + ';text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:2px;';
+  h.style.cssText = 'font-size:10px;color:' + cPrimaryLighter + ';text-transform:uppercase;letter-spacing:0.6px;font-weight:700;margin-bottom:2px;';
   h.textContent = heading;
   card.appendChild(h);
 
   for (const r of rows) {
     const row = document.createElement('div');
-    row.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11px;';
+    row.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;';
     const label = document.createElement('span');
-    label.style.cssText = 'color:' + cPanelFgDim + ';';
+    label.style.cssText = 'color:' + cPanelFgDim + ';font-size:11px;';
     label.textContent = r.label;
     const value = document.createElement('span');
-    const tone = r.tone === 'warn' ? '#fbbf24' : r.tone === 'muted' ? cPanelFgDim : '#e0e0e0';
-    value.style.cssText = 'color:' + tone + ';font-weight:600;font-variant-numeric:tabular-nums;';
+    const color = toneColor(r.tone);
+    const isNumeric = /^[\d,.\s\/—–-]+$/.test(r.value);
+    const size = isNumeric ? '16px' : '12px';
+    value.style.cssText = 'color:' + color + ';font-weight:700;font-variant-numeric:tabular-nums;font-size:' + size + ';letter-spacing:0.2px;';
     value.textContent = r.value;
     row.appendChild(label);
     row.appendChild(value);
