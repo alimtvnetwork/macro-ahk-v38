@@ -40,6 +40,7 @@ import {
   createPanelLayoutCtx,
   createResizeHandle,
   enableFloating,
+  hideBodyElementForMinimize,
   loadPanelGeometry,
   restorePanel,
   setupDragListeners,
