@@ -15,6 +15,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 vi.mock('../shared-state', () => ({
   cPanelFgDim: '#94a3b8',
   cPrimaryLight: '#a78bfa',
+  cSectionBg: '#1e1e2e',
+  cSectionHeader: '#e8e8e8',
+  cSectionToggle: '#9e9e9e',
+  cPanelBorder: '#313147',
 }));
 
 vi.mock('../logging', () => ({
