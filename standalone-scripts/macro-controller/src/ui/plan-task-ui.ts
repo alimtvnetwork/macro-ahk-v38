@@ -99,7 +99,9 @@ function wireShellToggle(row: HTMLElement, arrow: HTMLElement, sub: HTMLElement,
     e.stopPropagation();
     if (sub.style.display === 'none') show(); else hide();
   };
-  item.onmouseleave = function() { setTimeout(function() { if (!item.matches(':hover')) hide(); }, 120); };
+  // RC-3 fix: do NOT auto-collapse on mouseleave. Outside-click handler in prompts-dropdown.ts
+  // already closes the parent dropdown (and therefore this sub) when the user clicks away.
+  // The previous 120ms timeout raced with preset clicks that crossed the panel border.
 }
 
 function keepInView(dropdown: HTMLElement, sub: HTMLElement): void {
