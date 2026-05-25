@@ -121,8 +121,8 @@ function appendPresetSteps(sub: HTMLElement, dropdown: HTMLElement): void {
     it.onmouseout = function() { (this as HTMLElement).style.background = 'transparent'; };
     it.onclick = function(e: Event) {
       e.stopPropagation();
-      dropdown.style.display = 'none';
       injectPlanPrompt(n);
+      dropdown.style.display = 'none';
     };
     sub.appendChild(it);
   }
