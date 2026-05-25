@@ -187,7 +187,7 @@ export function setPersistenceMode(mode: TransientState["persistenceMode"]): voi
 /** Restores transient state from chrome.storage.session on wake. */
 export async function rehydrateState(): Promise<void> {
     const stored = await (chrome.storage as unknown as { session: { get: (k: string) => Promise<Record<string, unknown>> } }).session.get(SESSION_KEY);
-    const state: TransientState = stored[SESSION_KEY] ?? getDefaultState();
+    const state: TransientState = (stored[SESSION_KEY] as TransientState | undefined) ?? getDefaultState();
 
     activeProjectId = state.activeProjectId;
     tabInjections = state.tabInjections;
