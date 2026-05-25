@@ -56,11 +56,12 @@ import { resolveBadgeStyle } from './workspace-badge-styles';
 // CQ11/CQ17: Encapsulated view-filter state
 // ============================================
 
-/** Manages workspace list view state (compact mode, free-only filter, expired-with-credits filter, refill-priority sort). */
+/** Manages workspace list view state (compact mode, free-only filter, expired-with-credits filter, refill-soon filter, refill-priority sort). */
 class WsListViewState {
   private static instance: WsListViewState | null = null;
   private isFreeOnly = false;
   private isExpiredWithCredits = false;
+  private isRefillSoon = false;
   private isCompactMode: boolean;
   private isRefillPriority: boolean;
 
@@ -90,37 +91,19 @@ class WsListViewState {
     }
   }
 
-  getCompactMode(): boolean {
+  getCompactMode(): boolean { return this.isCompactMode; }
+  setCompactMode(val: boolean): void { this.isCompactMode = val; }
 
-    return this.isCompactMode;
-  }
+  getFreeOnly(): boolean { return this.isFreeOnly; }
+  setFreeOnly(val: boolean): void { this.isFreeOnly = val; }
 
-  setCompactMode(val: boolean): void {
-    this.isCompactMode = val;
-  }
+  getExpiredWithCredits(): boolean { return this.isExpiredWithCredits; }
+  setExpiredWithCredits(val: boolean): void { this.isExpiredWithCredits = val; }
 
-  getFreeOnly(): boolean {
+  getRefillSoon(): boolean { return this.isRefillSoon; }
+  setRefillSoon(val: boolean): void { this.isRefillSoon = val; }
 
-    return this.isFreeOnly;
-  }
-
-  setFreeOnly(val: boolean): void {
-    this.isFreeOnly = val;
-  }
-
-  getExpiredWithCredits(): boolean {
-
-    return this.isExpiredWithCredits;
-  }
-
-  setExpiredWithCredits(val: boolean): void {
-    this.isExpiredWithCredits = val;
-  }
-
-  getRefillPriority(): boolean {
-
-    return this.isRefillPriority;
-  }
+  getRefillPriority(): boolean { return this.isRefillPriority; }
 
   setRefillPriority(val: boolean): void {
     this.isRefillPriority = val;
@@ -131,6 +114,7 @@ class WsListViewState {
     }
   }
 }
+
 
 /** Shorthand for singleton access. */
 function viewState(): WsListViewState {
