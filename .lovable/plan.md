@@ -12,6 +12,14 @@ Specs:
 
 ## Remaining tasks (blocked or deferred)
 
+### Active — Issue 114 (5 steps, target v3.11.0)
+Spec: `spec/22-app-issues/114-pro-zero-credit-balance-calculation.md`
+- [ ] Step 1 — Pure calculator module + 12 unit tests
+- [ ] Step 2 — Wire calculator into pro-zero-credit-summary.ts + retire legacy branch for pro_0
+- [ ] Step 3 — Renderers consume enriched fields (status bar, hover card, Copy-JSON)
+- [ ] Step 4 — E2E harness + 6 fixtures
+- [ ] Step 5 — v3.11.0 bump, changelog, README, memory
+
 ### Blocked on user input / secrets
 - **P1 — Release installer hardening v0.2** — SLSA + minisign signing. *Blocked on `MINISIGN_SECRET_KEY` GitHub secret.*
   - Plan: `.lovable/plans/release-installer.md`
