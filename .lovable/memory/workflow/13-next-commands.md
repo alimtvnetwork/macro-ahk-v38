@@ -30,7 +30,6 @@ Trigger phrases the user may type to query this file:
 
 - [x] **UI issue — prompt section near buttons** — 2026-05-22, fixed injected controller Prompts → Task Next panel: submenu now opens inline inside the dropdown/controller instead of fixed-positioning outside and colliding with nearby buttons.
 - [x] **Test infra fix** — macro-controller has no vitest suite; item was stale (2026-05-22).
-- [ ] **Task 1.2** — E2E Chrome verification (manual smoke pass on installer build)
 - [x] **Dashboard "scripts not available" — Phase 2b** — auto-attach scripts to project by URL condition shipped 2026-05-24 (v3.9.2). Root cause was `AutoInject: false` on macro-controller/lovable-owner-switch/lovable-user-add seeds; changed to `true` so they pass C4 and auto-attach. lovable-common remains dependency-only (resolved at injection-time).
 - [x] **Error-swallow P1** — all 14 items cleared (2026-05-19)
 - [x] **Error-swallow P2** — audit shows 0 active findings across src/ as of 2026-05-22
@@ -50,12 +49,15 @@ Trigger phrases the user may type to query this file:
 - [ ] **P Store** — owner spec pending (deferred — discuss-later mode per user)
 - [x] **TS Migration V2 Phase 03** — React feasibility (S-051) — re-evaluated 2026-04-23, **NOT PROCEEDING** (UIManager 58 lines, UI total 15,223 lines under 20K threshold)
 
-## Deferred — Do NOT auto-recommend (per user, 2026-04-23)
+## Policy — Test With Features (active since 2026-05-25)
 
-- [ ] **React component tests (target 900+)** — skip in `next` rotation
-- [ ] **E2E React UI verification (Step 10)** — manual Chrome testing avoided (closed via 74 Playwright CI tests, 2026-04-22)
-- [ ] **Prompt Click E2E (Issues 52/53)** — manual Chrome testing avoided
+Every new feature or fix ships with matching tests: unit (Vitest) for pure logic, `@testing-library/react` for React components, Playwright E2E for cross-module flows. This is a standing policy, not a backlog item.
+
+## Deferred — Do NOT auto-recommend (per user)
+
+- [ ] **P Store** — owner spec pending (discuss-later mode per user)
 - [ ] **Cross-Project Sync & Shared Library** — depends on P Store
+- [ ] **Prompt Click E2E (Issues 52/53)** — deferred (manual Chrome testing)
 
 ## P3 — Optional Follow-ups (members panel, v2.216.0)
 
